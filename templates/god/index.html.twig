@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Olympe{% endblock %}
+{% block stylesheets %}
+    <style>
+        .header {
+            padding-left: auto;
+            padding-right: auto;
+            text-align: center;
+        }
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .smallcard{
+            border: 1px solid black;
+            padding: 10px;
+            margin: 10px;
+            width: 200px;        
+        }
+        #god {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        #god div {
+            margin: 10px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="header">
+    <h1>Welcome to Olympe OnLine</h1>
+    <p>Here you can praise your favorite greek God!</p>
+</div>
+
+<h2>Gods</h2>
+<section>
+    {% for god in gods %}
+        <div class="smallcard">
+            <h3>{{ god.name|raw }}</h3>
+            <p>{{ god.title|raw }}</p>
+            <a href="{{ path('app_god_show', {slug: god.slug}) }}">
+                see more...
+            </a>
+            <br>
+            {% if is_granted('ROLE_ADMIN')%}
+            <br>
+                <form action="{{ path('app_god_delete', {id: god.id}) }}" method="post">
+                    <input type="hidden" name="csrf" value="{{ csrf_token('delete' ~ god.id) }}">
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>No gods found</p>
+    {% endfor %}
+</section>
+
+{% if is_granted('ROLE_ADMIN') %}
+    <h2>Add a God profile :</h2>
+    <section>
+    {{ form(form) }}
+    </section>
+{% endif %}
+
+{% endblock %}

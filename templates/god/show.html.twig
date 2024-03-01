@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <style>
+    section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        #god {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid black;
+            padding: 10px;
+        }
+        #god div {
+            margin: 10px;
+        }
+        .main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .bigCard {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid black;
+            padding: 10px;
+            width: 25%;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_god') }}">Back to the list</a>
+    <br>
+    <br>
+    
+    <div class="main">
+        <div class="bigCard">
+            <h1>{{ god.name|raw }}</h1>
+            <img src="{{ god.picture }}" alt="no picture available" width="300" height="300">
+            <h2>{{ god.title|raw }}</h2>
+        </div>
+        <div class="bigCard">
+            {# <h2>{{ god.praise_count|raw }}</h2> #}
+        </div>
+    </div>
+
+{% if is_granted('ROLE_ADMIN') %}
+    <h3>Update this God profile :</h3>
+    <section>
+    {{form(edit)}}
+    </section>
+{% endif %}
+
+{% endblock %}
